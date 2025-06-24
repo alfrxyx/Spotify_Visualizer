@@ -64,7 +64,7 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({ data, title }) => {
                     <div className="bg-gray-800 border border-gray-600 rounded-lg p-3 shadow-lg">
                       <p className="text-white font-medium">{data.track}</p>
                       <p className="text-gray-300 text-sm">{data.artist}</p>
-                      <p className="text-purple-400">Valence: {data.valence}%</p>
+                      <p className="text-green-400">Valence: {data.valence}%</p>
                       <p className="text-pink-400">Danceability: {data.danceability}%</p>
                     </div>
                   );
