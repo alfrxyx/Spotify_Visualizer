@@ -1,4 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import { Music, TrendingUp, Users, Zap, Heart, BarChart3 } from 'lucide-react';
 import { useSpotifyData } from './hooks/useSpotifyData';
 import { MetricCard } from './components/MetricCard';
@@ -19,6 +21,15 @@ import {
 } from './utils/dataProcessor';
 
 function App() {
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      // 👇 PERUBAHAN UTAMA ADA DI BARIS INI 👇
+      once: false,   // Set to false to animate every time you scroll
+      offset: 100,
+    });
+  }, []);
+
   const { data: rawData, loading, error } = useSpotifyData();
   
   const [filters, setFilters] = useState({
@@ -95,7 +106,7 @@ function App() {
   const { topTracks, topArtistsByStreams, topArtistsByTracks, averageStats, artistComparison } = processedData;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-950 to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-950 to-gray-900 overflow-x-hidden">
       {/* Header */}
       <header className="border-b border-gray-700/50 backdrop-blur-sm bg-gray-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -112,116 +123,133 @@ function App() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Filter Controls */}
-        <FilterControls
-          filters={filters}
-          onFilterChange={handleFilterChange}
-          availableArtists={availableArtists}
-        />
-
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <MetricCard
-            title="Rata-rata BPM"
-            value={averageStats.avgBpm}
-            subtitle="Beats per minute"
-            icon={<Zap className="h-5 w-5" />}
-          />
-          <MetricCard
-            title="Rata-rata Valence"
-            value={`${averageStats.avgValence}%`}
-            subtitle="Tingkat kebahagiaan"
-            icon={<Heart className="h-5 w-5" />}
-          />
-          <MetricCard
-            title="Rata-rata Energy"
-            value={`${averageStats.avgEnergy}%`}
-            subtitle="Tingkat energi"
-            icon={<TrendingUp className="h-5 w-5" />}
+        {/* Filter Controls with AOS */}
+        <div data-aos="fade-down">
+          <FilterControls
+            filters={filters}
+            onFilterChange={handleFilterChange}
+            availableArtists={availableArtists}
           />
         </div>
 
-        {/* Data Summary */}
-        <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-xl p-4 mb-8">
-          <p className="text-gray-300 text-sm">
-            📊 Menampilkan <span className="text-green-400 font-semibold">{filteredData.length}</span> lagu 
-            {filters.year && ` dari tahun ${filters.year}`}
-            {filters.artist && ` oleh artis yang mengandung "${filters.artist}"`}
-            {filters.minStreams && ` dengan minimal ${parseInt(filters.minStreams) / 1000000}M streams`}
-          </p>
+        {/* Stats Cards with staggered AOS */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div data-aos="fade-up" data-aos-delay="0">
+            <MetricCard
+              title="Rata-rata BPM"
+              value={averageStats.avgBpm}
+              subtitle="Beats per minute"
+              icon={<Zap className="h-5 w-5" />}
+            />
+          </div>
+          <div data-aos="fade-up" data-aos-delay="100">
+            <MetricCard
+              title="Rata-rata Valence"
+              value={`${averageStats.avgValence}%`}
+              subtitle="Tingkat kebahagiaan"
+              icon={<Heart className="h-5 w-5" />}
+            />
+          </div>
+          <div data-aos="fade-up" data-aos-delay="200">
+            <MetricCard
+              title="Rata-rata Energy"
+              value={`${averageStats.avgEnergy}%`}
+              subtitle="Tingkat energi"
+              icon={<TrendingUp className="h-5 w-5" />}
+            />
+          </div>
+        </div>
+
+        {/* Data Summary with AOS */}
+        <div data-aos="zoom-in">
+          <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-xl p-4 mb-8">
+            <p className="text-gray-300 text-sm">
+              📊 Menampilkan <span className="text-green-400 font-semibold">{filteredData.length}</span> lagu 
+              {filters.year && ` dari tahun ${filters.year}`}
+              {filters.artist && ` oleh artis yang mengandung "${filters.artist}"`}
+              {filters.minStreams && ` dengan minimal ${parseInt(filters.minStreams) / 1000000}M streams`}
+            </p>
+          </div>
         </div>
 
         {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Column */}
+          {/* Left Column with AOS */}
           <div className="space-y-8">
-            <DataTable 
-              data={topTracks} 
-              title="🏆 Top Lagu Streaming 2023" 
-            />
-            
-            <BarChart
-              data={topArtistsByStreams.map(artist => ({
-                artist: artist.artist.length > 15 ? artist.artist.substring(0, 15) + '...' : artist.artist,
-                totalStreams: artist.totalStreams,
-              }))}
-              title="👑 Total Streams per Artis"
-              dataKey="totalStreams"
-              nameKey="artist"
-              color="#1ed760"
-            />
-
-            <BarChart
-              data={topArtistsByTracks.map(artist => ({
-                artist: artist.artist.length > 15 ? artist.artist.substring(0, 15) + '...' : artist.artist,
-                trackCount: artist.trackCount,
-              }))}
-              title="🎵 Jumlah Lagu Hits per Artis"
-              dataKey="trackCount"
-              nameKey="artist"
-              color="#ec4899"
-            />
+            <div data-aos="fade-right">
+              <DataTable 
+                data={topTracks} 
+                title="🏆 Top Lagu Streaming 2023" 
+              />
+            </div>
+            <div data-aos="fade-right" data-aos-delay="100">
+              <BarChart
+                data={topArtistsByStreams.map(artist => ({
+                  artist: artist.artist.length > 15 ? artist.artist.substring(0, 15) + '...' : artist.artist,
+                  totalStreams: artist.totalStreams,
+                }))}
+                title="👑 Total Streams per Artis"
+                dataKey="totalStreams"
+                nameKey="artist"
+                color="#1ed760"
+              />
+            </div>
+            <div data-aos="fade-right" data-aos-delay="200">
+              <BarChart
+                data={topArtistsByTracks.map(artist => ({
+                  artist: artist.artist.length > 15 ? artist.artist.substring(0, 15) + '...' : artist.artist,
+                  trackCount: artist.trackCount,
+                }))}
+                title="🎵 Jumlah Lagu Hits per Artis"
+                dataKey="trackCount"
+                nameKey="artist"
+                color="#ec4899"
+              />
+            </div>
           </div>
 
-          {/* Right Column */}
+          {/* Right Column with AOS */}
           <div className="space-y-8">
-            <ScatterPlot 
-              data={filteredData} 
-              title="🎉 Pesta Perasaan Musik" 
-            />
-
-            <ArtistComparison
-              artist1={artistComparison.artist1}
-              artist2={artistComparison.artist2}
-            />
-
-            {/* Insight Card */}
-            <div className="bg-gradient-to-r from-blue-950/50 to-blue-800/50 backdrop-blur-sm border border-purple-700/50 rounded-xl p-6
-                    transition-all duration-300 ease-in-out 
-                    hover:scale-105 hover:-translate-y-2 hover:border-purple-700/50">
-              <div className="flex items-center space-x-3 mb-4">
-                <BarChart3 className="h-6 w-6 text-purple-400" />
-                <h3 className="text-xl font-bold text-white">💡 Insight Menarik</h3>
-              </div>
-              <div className="space-y-3 text-gray-300">
-                {topTracks.length > 0 ? (
-                  <>
-                    <p>
-                      🎯 <strong className="text-white">Lagu terpopuler:</strong> "{topTracks[0]?.track_name}" 
-                      dengan {(topTracks[0]?.streams / 1000000).toFixed(1)}M streams
-                    </p>
-                    <p>
-                      🎤 <strong className="text-white">Raja streaming:</strong> {topArtistsByStreams[0]?.artist} 
-                      mendominasi dengan total {(topArtistsByStreams[0]?.totalStreams / 1000000000).toFixed(1)}B streams
-                    </p>
-                    <p>
-                      🎵 <strong className="text-white">Produktif:</strong> {topArtistsByTracks[0]?.artist} 
-                      paling banyak lagu hits ({topArtistsByTracks[0]?.trackCount} tracks)
-                    </p>
-                  </>
-                ) : (
-                  <p>🔍 Tidak ada data yang sesuai dengan filter saat ini. Coba ubah pengaturan filter.</p>
-                )}
+            <div data-aos="fade-left">
+              <ScatterPlot 
+                data={filteredData} 
+                title="🎉 Pesta Perasaan Musik" 
+              />
+            </div>
+            <div data-aos="fade-left" data-aos-delay="100">
+              <ArtistComparison
+                artist1={artistComparison.artist1}
+                artist2={artistComparison.artist2}
+              />
+            </div>
+            <div data-aos="fade-left" data-aos-delay="200">
+              <div className="bg-gradient-to-r from-blue-950/50 to-blue-800/50 backdrop-blur-sm border border-purple-700/50 rounded-xl p-6
+                            transition-all duration-300 ease-in-out 
+                            hover:scale-105 hover:-translate-y-2 hover:border-purple-700/50">
+                <div className="flex items-center space-x-3 mb-4">
+                  <BarChart3 className="h-6 w-6 text-purple-400" />
+                  <h3 className="text-xl font-bold text-white">💡 Insight Menarik</h3>
+                </div>
+                <div className="space-y-3 text-gray-300">
+                  {topTracks.length > 0 ? (
+                    <>
+                      <p>
+                        🎯 <strong className="text-white">Lagu terpopuler:</strong> "{topTracks[0]?.track_name}" 
+                        dengan {(topTracks[0]?.streams / 1000000).toFixed(1)}M streams
+                      </p>
+                      <p>
+                        🎤 <strong className="text-white">Raja streaming:</strong> {topArtistsByStreams[0]?.artist} 
+                        mendominasi dengan total {(topArtistsByStreams[0]?.totalStreams / 1000000000).toFixed(1)}B streams
+                      </p>
+                      <p>
+                        🎵 <strong className="text-white">Produktif:</strong> {topArtistsByTracks[0]?.artist} 
+                        paling banyak lagu hits ({topArtistsByTracks[0]?.trackCount} tracks)
+                      </p>
+                    </>
+                  ) : (
+                    <p>🔍 Tidak ada data yang sesuai dengan filter saat ini. Coba ubah pengaturan filter.</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>

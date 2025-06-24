@@ -15,12 +15,16 @@ interface ArtistComparisonProps {
 }
 
 export const ArtistComparison: React.FC<ArtistComparisonProps> = ({ artist1, artist2 }) => {
-  if (!artist1.trackCount && !artist2.trackCount) {
+  // Perbaikan Logika: Cek jika SALAH SATU artis tidak memiliki data
+  if (!artist1 || !artist2 || !artist1.trackCount || !artist2.trackCount) {
     return (
-      <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
-        <h3 className="text-xl font-bold text-white mb-2">DNA Musik: Taylor Swift vs Olivia Rodrigo</h3>
+      // Penambahan Animasi: Tambahkan kelas transisi & hover di sini juga
+      <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6
+                      transition-all duration-300 ease-in-out 
+                      hover:scale-105 hover:-translate-y-2 hover:border-green-400">
+        <h3 className="text-xl font-bold text-white mb-2">🎵 DNA Musik</h3>
         <div className="h-64 flex items-center justify-center">
-          <p className="text-gray-400">Data artis tidak ditemukan dalam filter saat ini</p>
+          <p className="text-gray-400">Data salah satu atau kedua artis tidak ditemukan.</p>
         </div>
       </div>
     );
@@ -46,16 +50,19 @@ export const ArtistComparison: React.FC<ArtistComparisonProps> = ({ artist1, art
 
   return (
     <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6
-                    transition-all duration-300 ease-in-out 
-                    hover:scale-105 hover:-translate-y-2 hover:border-green-400">
-      <h3 className="text-xl font-bold text-white mb-2">🎵 DNA Musik: Taylor Swift vs Olivia Rodrigo</h3>
+                      transition-all duration-300 ease-in-out 
+                      hover:scale-105 hover:-translate-y-2 hover:border-green-400">
+      {/* Perbaikan Judul: Dibuat dinamis */}
+      <h3 className="text-xl font-bold text-white mb-2">🎵 DNA Musik: {artist1.name} vs {artist2.name}</h3>
+      
+      {/* Perbaikan Deskripsi: Dibuat lebih umum */}
       <p className="text-gray-400 text-sm mb-4">
-        Data menunjukkan bahwa Olivia Rodrigo punya nilai valence dan tempo (BPM) yang lebih tinggi.
-        Namun, lagu-lagunya memang cenderung lebih mellow karena memiliki tingkat energy yang lebih rendah
-        dibandingkan Taylor Swift — cocok buat nangis di pojokan kamar.
+        Membandingkan karakteristik musik antara dua artis berdasarkan Valence, Energy, dan BPM.
       </p>
+
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div className="text-center">
+          {/* Warna disesuaikan dengan chart bar */}
           <p className="text-pink-400 font-medium">{artist1.name}</p>
           <p className="text-gray-400 text-sm">{artist1.trackCount} tracks</p>
         </div>
@@ -84,7 +91,8 @@ export const ArtistComparison: React.FC<ArtistComparisonProps> = ({ artist1, art
               }}
             />
             <Legend />
-            <Bar dataKey={artist1.name} fill="#ec4899 " radius={[4, 4, 0, 0]} />
+            {/* Warna disesuaikan dengan teks di atas */}
+            <Bar dataKey={artist1.name} fill="#ec4899" radius={[4, 4, 0, 0]} />
             <Bar dataKey={artist2.name} fill="#1ed760" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
