@@ -10,7 +10,10 @@ interface ScatterPlotProps {
 export const ScatterPlot: React.FC<ScatterPlotProps> = ({ data, title }) => {
   if (!data || data.length === 0) {
     return (
-      <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
+      // Blok ini sudah benar
+      <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6
+                      transition-all duration-300 ease-in-out 
+                      hover:scale-105 hover:-translate-y-2 hover:border-green-400">
         <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
         <div className="h-80 flex items-center justify-center">
           <p className="text-gray-400">Tidak ada data untuk ditampilkan</p>
@@ -27,7 +30,10 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({ data, title }) => {
   })).filter(item => item.valence > 0 && item.danceability > 0);
 
   return (
-    <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
+    // 👇 WARNA BORDER DI BLOK INI JUGA DIUBAH MENJADI HIJAU 👇
+    <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6
+                    transition-all duration-300 ease-in-out 
+                    hover:scale-105 hover:-translate-y-2 hover:border-green-400">
       <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
       <p className="text-gray-400 text-sm mb-4">
         Ternyata, lagu hits 2023 punya beat asyik untuk bergoyang, namun dengan nuansa yang sedikit melankolis.

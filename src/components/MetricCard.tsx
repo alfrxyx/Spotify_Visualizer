@@ -9,7 +9,10 @@ interface MetricCardProps {
 
 export const MetricCard: React.FC<MetricCardProps> = ({ title, value, subtitle, icon }) => {
   return (
-    <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6 hover:bg-gray-800/70 transition-all duration-300">
+    <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6 
+                    hover:bg-gray-800/70 transition-all duration-300 
+                    hover:scale-105 hover:-translate-y-2 hover:border-green-400">
+      
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-gray-400 text-sm font-medium">{title}</h3>
         {icon && <div className="text-purple-400">{icon}</div>}

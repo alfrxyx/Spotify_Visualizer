@@ -45,7 +45,9 @@ export const ArtistComparison: React.FC<ArtistComparisonProps> = ({ artist1, art
   ];
 
   return (
-    <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
+    <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6
+                    transition-all duration-300 ease-in-out 
+                    hover:scale-105 hover:-translate-y-2 hover:border-green-400">
       <h3 className="text-xl font-bold text-white mb-2">🎵 DNA Musik: Taylor Swift vs Olivia Rodrigo</h3>
       <p className="text-gray-400 text-sm mb-4">
         Data menunjukkan bahwa Olivia Rodrigo punya nilai valence dan tempo (BPM) yang lebih tinggi.
