@@ -111,7 +111,7 @@ function App() {
       <header className="border-b border-gray-700/50 backdrop-blur-sm bg-gray-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center space-x-3">
-            <Music className="h-8 w-8 text-purple-400" />
+            <Music className="h-8 w-8 text-green-400" />
             <div>
               <h1 className="text-3xl font-bold text-white">
                 🎧 Streaming Showdown 2023
@@ -227,7 +227,7 @@ function App() {
                             transition-all duration-300 ease-in-out 
                             hover:scale-105 hover:-translate-y-2 hover:border-purple-700/50">
                 <div className="flex items-center space-x-3 mb-4">
-                  <BarChart3 className="h-6 w-6 text-purple-400" />
+                  <BarChart3 className="h-6 w-6 text-green-400" />
                   <h3 className="text-xl font-bold text-white">💡 Insight Menarik</h3>
                 </div>
                 <div className="space-y-3 text-gray-300">

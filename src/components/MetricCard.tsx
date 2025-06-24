@@ -15,7 +15,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({ title, value, subtitle, 
       
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-gray-400 text-sm font-medium">{title}</h3>
-        {icon && <div className="text-purple-400">{icon}</div>}
+        {icon && <div className="text-green-400">{icon}</div>}
       </div>
       <div className="text-2xl font-bold text-white mb-1">{value}</div>
       {subtitle && <p className="text-gray-500 text-xs">{subtitle}</p>}

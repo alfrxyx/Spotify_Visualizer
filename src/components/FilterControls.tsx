@@ -22,7 +22,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
                     hover:scale-105 hover:-translate-y-2 hover:border-green-400">
       
       <div className="flex items-center space-x-3 mb-4">
-        <Filter className="h-5 w-5 text-purple-400" />
+        <Filter className="h-5 w-5 text-green-400" />
         <h3 className="text-lg font-semibold text-white">Filter Data</h3>
       </div>
       
