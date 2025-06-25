@@ -101,9 +101,9 @@ function App() {
             <Music className="h-8 w-8 text-green-400" />
             <div>
               <h1 className="text-3xl font-bold text-white">
-                🎧 Streaming Showdown 2023
+                Bedah DNA Musik Spotify 2023
               </h1>
-              <p className="text-gray-400 mt-1">Siapa Menguasai Telinga Dunia?</p>
+              <p className="text-gray-400 mt-1">Mengungkap Pola Dibalik Lagu Terpopuler</p>
             </div>
           </div>
         </div>
@@ -161,7 +161,7 @@ function App() {
           </div>
         </div>
         <footer className="mt-16 text-center text-gray-500 text-sm">
-          <p>Data: Spotify Top Songs 2023 | Dashboard dibuat oleh Alfarabi Gazali Sati & M Ikbal Alfarizi</p>
+          <p>Bedah DNA Musik Spotify 2023 | Dashboard dibuat oleh Alfarabi Gazali Sati</p>
         </footer>
       </main>
     </div>
