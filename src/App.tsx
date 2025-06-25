@@ -71,14 +71,13 @@ function App() {
     const topArtistsByTracks = getTopArtistsByTrackCount(artistStats, 10);
     const averageStats = getAverageStats(filteredData);
     
-    // 👇 PERUBAHAN UTAMA: Ganti 'Olivia Rodrigo' dengan 'The Weeknd'
     const artistComparison = getArtistComparison(filteredData, 'Taylor Swift', 'The Weeknd');
 
     return {
       topTracks, artistStats, topArtistsByStreams, topArtistsByTracks, averageStats,
       artistComparison, // Gunakan perbandingan artis
     };
-  }, [rawData, filteredData]); // Tambahkan rawData sebagai dependensi
+  }, [rawData, filteredData]);
 
   if (loading) {
     // ... (kode loading tidak berubah)
@@ -90,12 +89,11 @@ function App() {
     return <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-950 to-gray-900 flex items-center justify-center"><div className="text-center"><p className="text-red-400 text-lg">Error: {error}</p></div></div>;
   }
 
-  // KEMBALI menggunakan artistComparison
   const { topTracks, topArtistsByStreams, topArtistsByTracks, averageStats, artistComparison } = processedData;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-950 to-gray-900 overflow-x-hidden">
-      <header className="border-b border-gray-700/50 backdrop-blur-sm bg-gray-900/50">
+      <header className="border-b border-gray-700/50 backdrop-blur-sm bg-gray-900/50 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center space-x-3">
             <Music className="h-8 w-8 text-green-400" />
@@ -110,7 +108,6 @@ function App() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* ... (Filter, Metric Cards, Summary tidak berubah) ... */}
         <div data-aos="fade-down">
           <FilterControls filters={filters} onFilterChange={handleFilterChange} availableArtists={availableArtists} />
         </div>
@@ -128,32 +125,30 @@ function App() {
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="space-y-8">
-            {/* ... (Kolom Kiri tidak berubah) ... */}
             <div data-aos="fade-right"><DataTable data={topTracks} title="🏆 Top Lagu Streaming 2023" /></div>
             <div data-aos="fade-right" data-aos-delay="100"><BarChart data={topArtistsByStreams.map(artist => ({ artist: artist.artist.length > 15 ? artist.artist.substring(0, 15) + '...' : artist.artist, totalStreams: artist.totalStreams, }))} title="👑 Total Streams per Artis" dataKey="totalStreams" nameKey="artist" color="#1ed760" /></div>
             <div data-aos="fade-right" data-aos-delay="200"><BarChart data={topArtistsByTracks.map(artist => ({ artist: artist.artist.length > 15 ? artist.artist.substring(0, 15) + '...' : artist.artist, trackCount: artist.trackCount, }))} title="🎵 Jumlah Lagu Hits per Artis" dataKey="trackCount" nameKey="artist" color="#ec4899" /></div>
           </div>
           <div className="space-y-8">
             <div data-aos="fade-left"><ScatterPlot data={filteredData} title="🎉 Pesta Perasaan Musik" /></div>
-            {/* 👇 KEMBALI MENGGUNAKAN ArtistComparison 👇 */}
             <div data-aos="fade-left" data-aos-delay="100">
               <ArtistComparison
                 artist1={artistComparison.artist1}
                 artist2={artistComparison.artist2}
               />
             </div>
-            {/* ... (Insight Card tidak berubah) ... */}
+            {/* Kartu Insight Menarik */}
             <div data-aos="fade-left" data-aos-delay="200">
               <div className="bg-gradient-to-r from-blue-950/50 to-blue-800/50 backdrop-blur-sm border border-purple-700/50 rounded-xl p-6 transition-all duration-300 ease-in-out hover:scale-105 hover:-translate-y-2 hover:border-purple-700/50">
                 <div className="flex items-center space-x-3 mb-4">
-                  <BarChart3 className="h-6 w-6 text-green-400" />
                   <h3 className="text-xl font-bold text-white">💡 Insight Menarik</h3>
                 </div>
                 <div className="space-y-3 text-gray-300">
                   {topTracks.length > 0 ? (<>
-                    <p>🎯 <strong className="text-white">Lagu terpopuler:</strong> "{topTracks[0]?.track_name}" dengan {(topTracks[0]?.streams / 1000000).toFixed(1)}M streams</p>
-                    <p>🎤 <strong className="text-white">Raja streaming:</strong> {topArtistsByStreams[0]?.artist} mendominasi dengan total {(topArtistsByStreams[0]?.totalStreams / 1000000000).toFixed(1)}B streams</p>
-                    <p>🎵 <strong className="text-white">Produktif:</strong> {topArtistsByTracks[0]?.artist} paling banyak lagu hits ({topArtistsByTracks[0]?.trackCount} tracks)</p>
+                    <p> <strong className="text-white">Lagu terpopuler:</strong> "{topTracks[0]?.track_name}" dengan {(topTracks[0]?.streams / 1000000).toFixed(1)}M streams.</p>
+                    <p> <strong className="text-white">Raja streaming:</strong> {topArtistsByStreams[0]?.artist} mendominasi dengan total {(topArtistsByStreams[0]?.totalStreams / 1000000000).toFixed(1)}B streams.</p>
+                    <p> <strong className="text-white">Paling produktif:</strong> {topArtistsByTracks[0]?.artist} paling banyak lagu hits ({topArtistsByTracks[0]?.trackCount} lagu).</p>
+                    <p> <strong className="text-white">Paradoks Populer:</strong> Lagu-lagu hits cenderung asyik untuk bergoyang, namun dengan nuansa yang sedikit melankolis.</p>
                   </>) : (<p>🔍 Tidak ada data yang sesuai dengan filter saat ini. Coba ubah pengaturan filter.</p>)}
                 </div>
               </div>
