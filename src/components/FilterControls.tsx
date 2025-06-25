@@ -36,7 +36,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           <select
             value={filters.year}
             onChange={(e) => onFilterChange('year', e.target.value)}
-            className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-pink-500 focus:border-transparent"
           >
             <option value="">Semua Tahun</option>
             <option value="2023">2023</option>
@@ -56,7 +56,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           <select
             value={filters.artist}
             onChange={(e) => onFilterChange('artist', e.target.value)}
-            className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-pink-500 focus:border-transparent"
           >
             <option value="">Semua Artis</option>
             {availableArtists.map((artist) => (
@@ -76,7 +76,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           <select
             value={filters.minStreams}
             onChange={(e) => onFilterChange('minStreams', e.target.value)}
-            className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-pink-500 focus:border-transparent"
           >
             <option value="">Semua</option>
             <option value="100000000">100M+</option>
